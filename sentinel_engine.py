@@ -13,38 +13,54 @@ Core Algorithm :
 
 """
 
+""" 
+the original core engine .
 
-from time import perf_counter_ns
+def ip_address_to_hashed_index(register,ip_address,prime) :
+    ip_index=((ip_address[0]<<24)+(ip_address[1]<<16)+(ip_address[2]<<8)+(ip_address[3]))% prime
+    register[ip_index]+=1
+    
+"""
+import random
+import time
+
 
 ip_mapper=[0]*1000003 #the map of the ip_addresses
 prime_number=1000003 #the prime number used to modulus the index to distribute even patterns
 
-def ip_address_to_hashed_index(register,ip_address,prime) :
-    ip_index=(ip_address[0]<<24)+(ip_address[1]<<16)+(ip_address[2]<<8)+(ip_address[3])
-    ip_index=ip_index % prime
-    register[ip_index]+=1
 
 # a test loop only runs on main .
 if __name__== "__main__":
 
-    total_time,count=0,0
+    Total_fake_ips=100000
+    mapper = ip_mapper
+    total_time,count,ip_address_for_passing=0,0,[[0,0,0,0]*Total_fake_ips]
 
-    for i in range(0, 10):
-        for j in range(0, 10):
-            for k in range(0, 10):
-                for h in range(0, 10):
-                    ip_address_for_passing = [i, j, k, h]
+    print("Initialising... ")
 
-                    t_1 = perf_counter_ns()
-                    ip_address_to_hashed_index(ip_mapper, ip_address_for_passing, prime_number)
-                    t_2 = perf_counter_ns()
+    for i in range(Total_fake_ips):
 
-                    total_time+=t_2 - t_1
+        ip=[random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255)]
+        ip_address_for_passing.append(ip)
 
-                    count+=1
+    print("Fake ips generated ....")
+    print("Starting engine..3..2..1;")
 
-    average_time=total_time/count
-    print("average latency:",average_time,"ns")
+    t_1 = time.perf_counter()
+
+    for ip_address in ip_address_for_passing:
+        ip_index = ((ip_address[0] << 24) + (ip_address[1] << 16) + (ip_address[2] << 8) + (ip_address[3]))% 1000003
+
+        mapper[ip_index] += 1
+
+
+    t_2 = time.perf_counter()
+    total_time=t_2 - t_1
+
+    duration=Total_fake_ips/total_time
+    print("average latency:",duration,"packets per second")
+    print("latency per packet :",total_time/Total_fake_ips)
+
 
 
 
