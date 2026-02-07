@@ -1,21 +1,25 @@
-sentinel_engine - High performing IP Indexing Module.
+# Sentinel Engine 🛡️
 
+**High-Performance IP Indexing Module for DDoS Detection**
 
+A pure Python engine optimized for extreme throughput and low latency. It maps IPv4 addresses to hashed buckets using bitwise operations and prime modulo hashing, designed to track request frequency in real-time.
 
-#Core Algorithm :
+---
 
-    1.compress IPv4_addresses to a 32-bit integer (Bit wise left shift).
-    2.maps the integer to a bucket index using Prime modulo hashing.
-    3.registers request Frequency to detect DDoS patterns .
+### 🚀 Performance Benchmarks
+* **Throughput:** ~972,000 Requests Per Second (RPS)
+* **Latency:** ~1.02 microseconds per packet
+* **Environment:** Single-threaded Python 3.14 (Laptop CPU)
 
-    Measured Latency ~ 1078 ns (Benchmark)
+---
 
- 
+### ⚡ Core Algorithm
+1.  **Compression:** Compresses 4-part IPv4 addresses into a 32-bit integer using **Bitwise Left Shift** (`<<`).
+2.  **Hashing:** Maps the integer to a fixed bucket index using **Prime Modulo** (`% 1000003`).
+3.  **Registration:** Tracks hit frequency using a direct-access array.
 
-#Optimized the core engine loop for maximum throughput:
-
-   1. Replaced function calls with direct bitwise logic (Inlining) to remove stack overhead.
-   2. Cached global variables (ip_mapper, prime) to local scope to reduce lookup time.
-   3. Result: Latency reduced to ~1.02 microseconds per packet.
-
-    Measured RPM : ~ 970k Request per Second  
+### 🔧 Optimization Techniques 
+To achieve <1.1µs latency in pure Python, I utilized:
+* **Loop Inlining:** Replaced function calls with inline bitwise logic to eliminate stack overhead.
+* **Local Caching:** Cached global variables (`ip_mapper`, `prime`) to local scope to minimize lookup time.
+* **Tuple Processing:** Switched from Lists to Tuples for faster memory access.
