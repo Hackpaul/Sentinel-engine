@@ -47,6 +47,18 @@ if __name__== "__main__":
     print("Starting engine..3..2..1;")
 
     t_1 = time.perf_counter()
+    """ 
+    --------------------------------------------------------------------------------------------------------
+    A High speed optimisation : Inlining & Local Caching
+    --------------------------------------------------------------------------------------------------------
+    
+    # I initially Changed  Function calls --> Inline function || Global Variable --> Local variable , to bypass
+    python's function overhead.
+    # This improves speed from ~600k RPS to ~970k RPS.
+    
+    
+    ---------------------------------------------------------------------------------------------------------
+    """
 
     for ip_address in ip_address_for_passing:
         ip_index = ((ip_address[0] << 24) + (ip_address[1] << 16) + (ip_address[2] << 8) + (ip_address[3]))% 1000003
